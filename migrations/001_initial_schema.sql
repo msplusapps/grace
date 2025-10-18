@@ -1,7 +1,3 @@
-CREATE DATABASE IF NOT EXISTS `msplus_fee_management`;
-
-USE `msplus_fee_management`;
-
 -- Table structure for table `students`
 CREATE TABLE `students` (
   `id` int(11) NOT NULL AUTO_INCREMENT,
