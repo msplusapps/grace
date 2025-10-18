@@ -1,9 +1,9 @@
 <?php
-// Database credentials
-define('DB_HOST', 'localhost');
-define('DB_NAME', 'msplus_fee_management');
-define('DB_USER', 'root');
-define('DB_PASS', ''); // Replace with your database password
+// Database credentials - It is recommended to use environment variables for these
+define('DB_HOST', getenv('DB_HOST') ?: 'localhost');
+define('DB_NAME', getenv('DB_NAME') ?: 'msplus_fee_management');
+define('DB_USER', getenv('DB_USER') ?: 'root');
+define('DB_PASS', getenv('DB_PASS') ?: '');
 
 // PDO DSN
 $dsn = "mysql:host=" . DB_HOST . ";dbname=" . DB_NAME . ";charset=utf8mb4";

@@ -186,3 +186,40 @@ function delete_payment($id) {
     $stmt = $pdo->prepare("DELETE FROM payments WHERE id = ?");
     return $stmt->execute([$id]);
 }
+
+/**
+ * Get the total number of students.
+ * @return int The total number of students.
+ */
+function get_student_count() {
+    global $pdo;
+    $stmt = $pdo->query("SELECT COUNT(*) FROM students");
+    return $stmt->fetchColumn();
+}
+
+/**
+ * Get the sum of all payments.
+ * @return float The total amount of all payments.
+ */
+function get_total_payments() {
+    global $pdo;
+    $stmt = $pdo->query("SELECT SUM(amount) FROM payments");
+    return $stmt->fetchColumn();
+}
+
+/**
+ * Get payment data for the last 30 days for charting.
+ * @return array An array of payment data.
+ */
+function get_payment_data_for_chart() {
+    global $pdo;
+    $stmt = $pdo->prepare("
+        SELECT DATE(payment_date) as date, SUM(amount) as total
+        FROM payments
+        WHERE payment_date >= CURDATE() - INTERVAL 30 DAY
+        GROUP BY DATE(payment_date)
+        ORDER BY DATE(payment_date)
+    ");
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
