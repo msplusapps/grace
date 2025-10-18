@@ -7,6 +7,12 @@ ini_set('error_log', __DIR__ . '/logs/error.log');
 // Initialize the session
 session_start();
 
+// If the user is not logged in, redirect to the login page
+if (!isset($_SESSION['user_id'])) {
+    header('Location: login.php');
+    exit;
+}
+
 // Include the database connection file
 require_once 'config/db.php';
 

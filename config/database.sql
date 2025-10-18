@@ -69,3 +69,7 @@ CREATE TABLE `settings` (
 INSERT INTO `settings` (`setting_key`, `setting_value`) VALUES
 ('site_name', 'MSPlus Fee Management'),
 ('active_theme', '1');
+
+-- Inserting default user
+INSERT INTO `users` (`username`, `password`, `email`, `role`) VALUES
+('admin', '$2y$10$92IXUNpkjO0rOQ5byMi.Ye4oKoEa3Ro9llC/.og/at2.uheWG/igi', 'admin@example.com', 'admin');
