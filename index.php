@@ -23,7 +23,7 @@ require_once 'lib/functions.php';
 $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
 
 // Whitelist of allowed pages
-$allowed_pages = ['dashboard', 'students', 'add_student', 'edit_student', 'payments', 'add_payment', 'student_payments', 'settings', 'online_payment', '404'];
+$allowed_pages = ['dashboard', 'students', 'add_student', 'edit_student', 'payments', 'add_payment', 'student_payments', 'settings', 'online_payment', '404', 'reports'];
 
 // If the requested page is not in the whitelist, show a 404 error
 if (!in_array($page, $allowed_pages)) {
@@ -38,7 +38,33 @@ include 'includes/header.php';
 include 'includes/sidebar.php';
 ?>
 
-<div class="main-content">
+<!-- Top bar -->
+<nav class="ml-64 bg-white dark:bg-gray-800 border-b border-gray-200 dark:border-gray-700 px-4 py-3">
+    <div class="flex justify-between items-center">
+        <div class="flex items-center space-x-4">
+            <button class="md:hidden text-gray-500 dark:text-gray-400">
+                <i data-feather="menu"></i>
+            </button>
+            <h2 class="text-lg font-semibold text-gray-800 dark:text-white"><?php echo ucfirst($page); ?></h2>
+        </div>
+        <div class="flex items-center space-x-4">
+            <div class="relative">
+                <i data-feather="bell" class="text-gray-500 dark:text-gray-400"></i>
+                <span class="absolute -top-1 -right-1 w-3 h-3 bg-red-500 rounded-full"></span>
+            </div>
+            <div class="relative">
+                <button class="flex items-center focus:outline-none">
+                    <div class="w-8 h-8 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
+                        <i data-feather="user" class="text-gray-600 dark:text-gray-300"></i>
+                    </div>
+                </button>
+            </div>
+        </div>
+    </div>
+</nav>
+
+<!-- Main Content -->
+<main class="ml-64 max-w-7xl mx-auto px-4 py-6">
     <?php
     // Include the page content
     $page_path = "pages/{$page}.php";

@@ -223,3 +223,56 @@ function get_payment_data_for_chart() {
     $stmt->execute();
     return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
+
+/**
+ * Get the count of pending payments.
+ * @return int The number of pending payments.
+ */
+function get_pending_payments_count() {
+    global $pdo;
+    // Assuming 'pending' is a status in the payment_method or a separate status column
+    // For now, let's count all payments that are not 'Completed'
+    $stmt = $pdo->query("SELECT COUNT(*) FROM payments WHERE payment_method != 'Completed'");
+    return $stmt->fetchColumn();
+}
+
+/**
+ * Get the count of overdue payments.
+ * @return int The number of overdue payments.
+ */
+function get_overdue_payments_count() {
+    global $pdo;
+    // Assuming overdue payments are those not 'Completed' and past their due date
+    $stmt = $pdo->query("SELECT COUNT(*) FROM payments WHERE payment_method != 'Completed' AND payment_date < CURDATE()");
+    return $stmt->fetchColumn();
+}
+
+/**
+ * Get the most recent payments.
+ * @param int $limit The number of recent payments to fetch.
+ * @return array An array of recent payments.
+ */
+function get_recent_payments($limit = 5) {
+    global $pdo;
+    $stmt = $pdo->prepare("
+        SELECT p.*, s.first_name, s.last_name
+        FROM payments p
+        JOIN students s ON p.student_id = s.id
+        ORDER BY p.payment_date DESC
+        LIMIT ?
+    ");
+    $stmt->execute([$limit]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}
+
+/**
+ * Get the most recent students.
+ * @param int $limit The number of recent students to fetch.
+ * @return array An array of recent students.
+ */
+function get_recent_students($limit = 5) {
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT * FROM students ORDER BY created_at DESC LIMIT ?");
+    $stmt->execute([$limit]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
+}

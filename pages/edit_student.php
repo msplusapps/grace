@@ -33,37 +33,47 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 }
 ?>
 
-<h2>Edit Student</h2>
+<div class="flex justify-between items-center mb-6">
+    <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Edit Student</h2>
+    <a href="index.php?page=students" class="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg transition-colors flex items-center space-x-2">
+        <i data-feather="arrow-left" class="w-4 h-4"></i>
+        <span>Back to Students</span>
+    </a>
+</div>
 
-<?php if (isset($error)): ?>
-    <div class="alert alert-danger"><?php echo $error; ?></div>
-<?php endif; ?>
-
-<form action="index.php?page=edit_student&id=<?php echo $student_id; ?>" method="post">
-    <div class="form-group">
-        <label for="first_name">First Name:</label>
-        <input type="text" name="first_name" id="first_name" class="form-control" value="<?php echo htmlspecialchars($student['first_name']); ?>" required>
-    </div>
-    <div class="form-group">
-        <label for="last_name">Last Name:</label>
-        <input type="text" name="last_name" id="last_name" class="form-control" value="<?php echo htmlspecialchars($student['last_name']); ?>" required>
-    </div>
-    <div class="form-group">
-        <label for="class">Class:</label>
-        <input type="text" name="class" id="class" class="form-control" value="<?php echo htmlspecialchars($student['class']); ?>" required>
-    </div>
-    <div class="form-group">
-        <label for="date_of_birth">Date of Birth:</label>
-        <input type="date" name="date_of_birth" id="date_of_birth" class="form-control" value="<?php echo htmlspecialchars($student['date_of_birth']); ?>">
-    </div>
-    <div class="form-group">
-        <label for="address">Address:</label>
-        <textarea name="address" id="address" class="form-control"><?php echo htmlspecialchars($student['address']); ?></textarea>
-    </div>
-    <div class="form-group">
-        <label for="parent_phone">Parent's Phone:</label>
-        <input type="text" name="parent_phone" id="parent_phone" class="form-control" value="<?php echo htmlspecialchars($student['parent_phone']); ?>">
-    </div>
-    <button type="submit" class="btn btn-primary">Update Student</button>
-    <a href="index.php?page=students" class="btn">Cancel</a>
-</form>
+<div class="glass-card p-6">
+    <form action="index.php?page=edit_student&id=<?php echo $student_id; ?>" method="post">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <div class="form-group">
+                <label for="first_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">First Name</label>
+                <input type="text" name="first_name" id="first_name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" value="<?php echo htmlspecialchars($student['first_name']); ?>" required>
+            </div>
+            <div class="form-group">
+                <label for="last_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Last Name</label>
+                <input type="text" name="last_name" id="last_name" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" value="<?php echo htmlspecialchars($student['last_name']); ?>" required>
+            </div>
+            <div class="form-group">
+                <label for="class" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Class</label>
+                <input type="text" name="class" id="class" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" value="<?php echo htmlspecialchars($student['class']); ?>" required>
+            </div>
+            <div class="form-group">
+                <label for="date_of_birth" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Date of Birth</label>
+                <input type="date" name="date_of_birth" id="date_of_birth" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" value="<?php echo htmlspecialchars($student['date_of_birth']); ?>">
+            </div>
+            <div class="form-group md:col-span-2">
+                <label for="address" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Address</label>
+                <textarea name="address" id="address" rows="3" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white"><?php echo htmlspecialchars($student['address']); ?></textarea>
+            </div>
+            <div class="form-group">
+                <label for="parent_phone" class="block text-sm font-medium text-gray-700 dark:text-gray-300">Parent's Phone</label>
+                <input type="text" name="parent_phone" id="parent_phone" class="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-primary-500 focus:ring-primary-500 dark:bg-gray-700 dark:border-gray-600 dark:text-white" value="<?php echo htmlspecialchars($student['parent_phone']); ?>">
+            </div>
+        </div>
+        <div class="mt-6 flex justify-end">
+            <button type="submit" class="px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-colors flex items-center space-x-2">
+                <i data-feather="save" class="w-4 h-4"></i>
+                <span>Update Student</span>
+            </button>
+        </div>
+    </form>
+</div>
