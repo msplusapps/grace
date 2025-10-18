@@ -1,4 +1,9 @@
 <?php
+// Error logging configuration
+ini_set('display_errors', 0);
+ini_set('log_errors', 1);
+ini_set('error_log', __DIR__ . '/logs/error.log');
+
 // Initialize the session
 session_start();
 
