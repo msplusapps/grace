@@ -7,21 +7,6 @@
         const themePalette = document.getElementById('themePalette');
         const themeOptions = document.querySelectorAll('.theme-option');
 
-        // Toggle theme palette visibility
-        themeToggle.addEventListener('click', () => {
-            themePalette.classList.toggle('hidden');
-        });
-
-        // Change theme color
-        themeOptions.forEach(option => {
-            option.addEventListener('click', () => {
-                const theme = option.getAttribute('data-theme');
-                // This is a placeholder for theme switching logic.
-                // In a real application, you would load a different CSS file or update CSS variables.
-                console.log('Selected theme:', theme);
-            });
-        });
-
         // Dark mode toggle
         const htmlElement = document.querySelector('html');
 

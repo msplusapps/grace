@@ -266,6 +266,30 @@ function get_recent_payments($limit = 5) {
 }
 
 /**
+ * Get a school setting from the database.
+ * @param string $key The setting key.
+ * @return mixed The setting value, or null if not found.
+ */
+function get_school_setting($key) {
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT setting_value FROM school_settings WHERE setting_key = ?");
+    $stmt->execute([$key]);
+    return $stmt->fetchColumn();
+}
+
+/**
+ * Update a school setting in the database.
+ * @param string $key The setting key.
+ * @param mixed $value The new setting value.
+ * @return bool True on success, false on failure.
+ */
+function update_school_setting($key, $value) {
+    global $pdo;
+    $stmt = $pdo->prepare("UPDATE school_settings SET setting_value = ? WHERE setting_key = ?");
+    return $stmt->execute([$value, $key]);
+}
+
+/**
  * Get the most recent students.
  * @param int $limit The number of recent students to fetch.
  * @return array An array of recent students.

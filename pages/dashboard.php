@@ -34,10 +34,6 @@ $recent_students = get_recent_students();
                 <i data-feather="users" class="text-primary-500 dark:text-primary-400"></i>
             </div>
         </div>
-        <p class="text-sm text-green-500 mt-2 flex items-center">
-            <i data-feather="arrow-up-right" class="w-4 h-4 mr-1"></i>
-            <span>12.5% from last month</span>
-        </p>
     </div>
 
     <div class="glass-card p-6">
@@ -50,10 +46,6 @@ $recent_students = get_recent_students();
                 <i data-feather="dollar-sign" class="text-purple-500 dark:text-purple-400"></i>
             </div>
         </div>
-        <p class="text-sm text-green-500 mt-2 flex items-center">
-            <i data-feather="arrow-up-right" class="w-4 h-4 mr-1"></i>
-            <span>8.3% from last month</span>
-        </p>
     </div>
 
     <div class="glass-card p-6">

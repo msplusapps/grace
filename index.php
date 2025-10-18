@@ -23,7 +23,7 @@ require_once 'lib/functions.php';
 $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
 
 // Whitelist of allowed pages
-$allowed_pages = ['dashboard', 'students', 'add_student', 'edit_student', 'payments', 'add_payment', 'student_payments', 'settings', 'online_payment', '404', 'reports'];
+$allowed_pages = ['dashboard', 'students', 'add_student', 'edit_student', 'payments', 'add_payment', 'student_payments', 'settings', 'online_payment', '404', 'reports', 'school_info'];
 
 // If the requested page is not in the whitelist, show a 404 error
 if (!in_array($page, $allowed_pages)) {
@@ -64,7 +64,7 @@ include 'includes/sidebar.php';
 </nav>
 
 <!-- Main Content -->
-<main class="ml-64 max-w-7xl mx-auto px-4 py-6">
+<main class="ml-64 px-4 py-6">
     <?php
     // Include the page content
     $page_path = "pages/{$page}.php";
