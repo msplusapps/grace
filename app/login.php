@@ -8,34 +8,64 @@ if (isset($_SESSION['user_id'])) {
     exit;
 }
 
-// Include the database connection file
-require_once '../core/config/db.php';
+// Include the Database class and get the connection
+require_once '../core/utils/Database.php';
+$db = Database::getInstance();
+$pdo = $db->getConnection();
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
-    $username = trim($_POST['username']);
-    $password = $_POST['password'];
+    require_once '../core/lib/functions.php';
+    if (!validate_csrf_token($_POST['csrf_token'])) {
+        die('Invalid CSRF token');
+    }
 
-    // Basic validation
-    if (empty($username) || empty($password)) {
-        $error = "Please enter your username and password.";
+    $ip_address = $_SERVER['REMOTE_ADDR'];
+    $timestamp = time();
+
+    // Check for failed login attempts
+    $stmt = $pdo->prepare("SELECT COUNT(*) FROM login_attempts WHERE ip_address = ? AND timestamp > ?");
+    $stmt->execute([$ip_address, $timestamp - (15 * 60)]);
+    $failed_attempts = $stmt->fetchColumn();
+
+    if ($failed_attempts > 5) {
+        $error = "You have been temporarily blocked due to too many failed login attempts. Please try again later.";
     } else {
-        // Get the user from the database
-        $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
-        $stmt->execute([$username]);
-        $user = $stmt->fetch();
+        $username = trim($_POST['username']);
+        $password = $_POST['password'];
 
-        // Verify the password
-        if ($user && password_verify($password, $user['password'])) {
-            // Store user data in the session
-            $_SESSION['user_id'] = $user['id'];
-            $_SESSION['username'] = $user['username'];
-            $_SESSION['role'] = $user['role'];
-            // Redirect to the dashboard
-            header('Location: ../index.php');
-            exit;
+        // Basic validation
+        if (empty($username) || empty($password)) {
+            $error = "Please enter your username and password.";
         } else {
-            $error = "Invalid username or password.";
+            // Get the user from the database
+            $stmt = $pdo->prepare("SELECT * FROM users WHERE username = ?");
+            $stmt->execute([$username]);
+            $user = $stmt->fetch();
+
+            // Verify the password
+            if ($user && password_verify($password, $user['password'])) {
+                // Clear login attempts for this IP
+                $stmt = $pdo->prepare("DELETE FROM login_attempts WHERE ip_address = ?");
+                $stmt->execute([$ip_address]);
+
+                // Regenerate session ID
+                session_regenerate_id(true);
+
+                // Store user data in the session
+                $_SESSION['user_id'] = $user['id'];
+                $_SESSION['username'] = $user['username'];
+                $_SESSION['role'] = $user['role'];
+                // Redirect to the dashboard
+                header('Location: ../index.php');
+                exit;
+            } else {
+                // Record failed login attempt
+                $stmt = $pdo->prepare("INSERT INTO login_attempts (ip_address, timestamp) VALUES (?, ?)");
+                $stmt->execute([$ip_address, $timestamp]);
+
+                $error = "Invalid username or password.";
+            }
         }
     }
 }
@@ -86,6 +116,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         <?php endif; ?>
 
         <form class="mt-8 space-y-6" action="login.php" method="POST">
+            <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
             <div class="rounded-md shadow-sm -space-y-px">
                 <div>
                     <label for="username" class="sr-only">Username</label>

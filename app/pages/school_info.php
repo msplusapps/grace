@@ -1,6 +1,10 @@
 <?php
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!validate_csrf_token($_POST['csrf_token'])) {
+        die('Invalid CSRF token');
+    }
+
     $school_name = trim($_POST['school_name']);
     $school_email = trim($_POST['school_email']);
     $school_phone = trim($_POST['school_phone']);
@@ -29,7 +33,8 @@ $school_address = get_school_setting('school_address');
 </div>
 
 <div class="glass-card p-6">
-    <form action="index.php?page=school_info" method="post">
+    <form action="/school_info" method="post">
+        <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="form-group">
                 <label for="school_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">School Name</label>

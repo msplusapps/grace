@@ -1,0 +1,16 @@
+<IfModule mod_rewrite.c>
+    RewriteEngine On
+    RewriteBase /
+
+    # Redirect trailing slashes to non-slashed URLs
+    RewriteRule ^(.*)/$ /$1 [L,R=301]
+
+    # Handle assets and other existing files
+    RewriteCond %{REQUEST_FILENAME} -s [OR]
+    RewriteCond %{REQUEST_FILENAME} -l [OR]
+    RewriteCond %{REQUEST_FILENAME} -d
+    RewriteRule ^.*$ - [NC,L]
+
+    # Route all other requests to index.php
+    RewriteRule ^(.*)$ index.php?page=$1 [QSA,L]
+</IfModule>

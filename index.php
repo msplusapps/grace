@@ -7,14 +7,22 @@ ini_set('error_log', __DIR__ . '/logs/error.log');
 // Initialize the session
 session_start();
 
+// Security Headers
+header("Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com;");
+header("X-Content-Type-Options: nosniff");
+header("X-Frame-Options: DENY");
+header("X-XSS-Protection: 1; mode=block");
+
 // If the user is not logged in, redirect to the login page
 if (!isset($_SESSION['user_id'])) {
     header('Location: app/login.php');
     exit;
 }
 
-// Include the database connection file
-require_once 'core/config/db.php';
+// Include the Database class and get the connection
+require_once 'core/utils/Database.php';
+$db = Database::getInstance();
+$pdo = $db->getConnection();
 
 // Include the functions file
 require_once 'core/lib/functions.php';
@@ -23,7 +31,7 @@ require_once 'core/lib/functions.php';
 $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
 
 // Whitelist of allowed pages
-$allowed_pages = ['dashboard', 'students', 'add_student', 'edit_student', 'payments', 'add_payment', 'student_payments', 'settings', 'online_payment', '404', 'reports', 'school_info'];
+$allowed_pages = ['dashboard', 'students', 'add_student', 'edit_student', 'payments', 'add_payment', 'student_payments', 'settings', 'online_payment', '404', 'reports', 'school_info', 'profile'];
 
 // If the requested page is not in the whitelist, show a 404 error
 if (!in_array($page, $allowed_pages)) {

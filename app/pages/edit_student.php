@@ -13,6 +13,10 @@ if (!$student) {
 
 // Handle form submission
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
+    if (!validate_csrf_token($_POST['csrf_token'])) {
+        die('Invalid CSRF token');
+    }
+
     $first_name = trim($_POST['first_name']);
     $last_name = trim($_POST['last_name']);
     $class = trim($_POST['class']);
@@ -35,14 +39,15 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
 
 <div class="flex justify-between items-center mb-6">
     <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Edit Student</h2>
-    <a href="index.php?page=students" class="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg transition-colors flex items-center space-x-2">
+    <a href="/students" class="px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg transition-colors flex items-center space-x-2">
         <i data-feather="arrow-left" class="w-4 h-4"></i>
         <span>Back to Students</span>
     </a>
 </div>
 
 <div class="glass-card p-6">
-    <form action="index.php?page=edit_student&id=<?php echo $student_id; ?>" method="post">
+    <form action="/edit_student?id=<?php echo $student_id; ?>" method="post">
+        <input type="hidden" name="csrf_token" value="<?php echo generate_csrf_token(); ?>">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
             <div class="form-group">
                 <label for="first_name" class="block text-sm font-medium text-gray-700 dark:text-gray-300">First Name</label>

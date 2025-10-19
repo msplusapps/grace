@@ -1,4 +1,12 @@
 <?php
+// Handle delete request
+if (isset($_GET['delete'])) {
+    $student_id = (int)$_GET['delete'];
+    delete_student($student_id);
+    header('Location: /students');
+    exit;
+}
+
 // Get search term
 $search = isset($_GET['search']) ? $_GET['search'] : '';
 
@@ -8,7 +16,7 @@ $students = get_students($search);
 
 <div class="flex justify-between items-center mb-6">
     <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Manage Students</h2>
-    <a href="index.php?page=add_student" class="px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-colors flex items-center space-x-2">
+    <a href="/add_student" class="px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-colors flex items-center space-x-2">
         <i data-feather="plus" class="w-4 h-4"></i>
         <span>Add New Student</span>
     </a>
@@ -34,8 +42,8 @@ $students = get_students($search);
                         <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400"><?php echo htmlspecialchars($student['class']); ?></td>
                         <td class="px-4 py-4 whitespace-nowrap text-sm text-gray-500 dark:text-gray-400"><?php echo htmlspecialchars($student['parent_phone']); ?></td>
                         <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
-                            <a href="index.php?page=edit_student&id=<?php echo $student['id']; ?>" class="text-primary-500 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300">Edit</a>
-                            <a href="index.php?page=students&delete=<?php echo $student['id']; ?>" class="ml-4 text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300" onclick="return confirm('Are you sure you want to delete this student?');">Delete</a>
+                            <a href="/edit_student?id=<?php echo $student['id']; ?>" class="text-primary-500 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300">Edit</a>
+                            <a href="/students?delete=<?php echo $student['id']; ?>" class="ml-4 text-red-500 dark:text-red-400 hover:text-red-700 dark:hover:text-red-300" onclick="return confirm('Are you sure you want to delete this student?');">Delete</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

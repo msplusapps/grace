@@ -11,7 +11,7 @@ $recent_students = get_recent_students();
 <div class="flex justify-between items-center mb-6">
     <h2 class="text-2xl font-bold text-gray-800 dark:text-white">Dashboard Overview</h2>
     <div class="flex space-x-2">
-        <a href="index.php?page=add_payment" class="px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-colors flex items-center space-x-2">
+        <a href="/add_payment" class="px-4 py-2 bg-primary-500 hover:bg-primary-600 text-white rounded-lg transition-colors flex items-center space-x-2">
             <i data-feather="plus" class="w-4 h-4"></i>
             <span>New Payment</span>
         </a>
@@ -108,7 +108,7 @@ $recent_students = get_recent_students();
                 </div>
             <?php endforeach; ?>
         </div>
-        <a href="index.php?page=payments" class="w-full mt-4 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg transition-colors flex items-center justify-center space-x-2">
+        <a href="/payments" class="w-full mt-4 px-4 py-2 bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700 text-gray-700 dark:text-gray-300 rounded-lg transition-colors flex items-center justify-center space-x-2">
             <span>View All Payments</span>
             <i data-feather="chevron-right" class="w-4 h-4"></i>
         </a>
@@ -119,7 +119,7 @@ $recent_students = get_recent_students();
 <div class="glass-card p-6 mt-6">
     <div class="flex justify-between items-center mb-4">
         <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Recent Students</h3>
-        <a href="index.php?page=students" class="text-primary-500 dark:text-primary-400 text-sm font-medium flex items-center space-x-1">
+        <a href="/students" class="text-primary-500 dark:text-primary-400 text-sm font-medium flex items-center space-x-1">
             <span>View All</span>
             <i data-feather="chevron-right" class="w-4 h-4"></i>
         </a>
@@ -152,7 +152,7 @@ $recent_students = get_recent_students();
                             <span class="px-2 inline-flex text-xs leading-5 font-semibold rounded-full bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-400">Active</span>
                         </td>
                         <td class="px-4 py-4 whitespace-nowrap text-sm font-medium">
-                            <a href="index.php?page=edit_student&id=<?php echo $student['id']; ?>" class="text-primary-500 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300">View</a>
+                            <a href="/edit_student?id=<?php echo $student['id']; ?>" class="text-primary-500 dark:text-primary-400 hover:text-primary-700 dark:hover:text-primary-300">View</a>
                         </td>
                     </tr>
                 <?php endforeach; ?>

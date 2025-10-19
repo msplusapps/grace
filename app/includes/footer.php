@@ -39,6 +39,7 @@
             htmlElement.classList.add('dark');
         }
     </script>
+    <script src="app/vendor/feather.min.js"></script>
     <script>
         feather.replace();
     </script>

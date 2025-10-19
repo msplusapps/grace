@@ -10,8 +10,10 @@ error_reporting(E_ALL);
 ini_set('display_errors', 1);
 
 // --- Database Connection ---
-// Include the database configuration
-require_once __DIR__ . '/config/db.php';
+// Include the Database class and get the connection
+require_once __DIR__ . '/utils/Database.php';
+$db = Database::getInstance();
+$pdo = $db->getConnection();
 
 // --- Migration Logic ---
 try {
