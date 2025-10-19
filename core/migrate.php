@@ -11,7 +11,7 @@ ini_set('display_errors', 1);
 
 // --- Database Connection ---
 // Include the database configuration
-require_once 'config/db.php';
+require_once __DIR__ . '/config/db.php';
 
 // --- Migration Logic ---
 try {
@@ -32,7 +32,7 @@ try {
     $applied_migrations = $pdo->query("SELECT migration_name FROM migrations")->fetchAll(PDO::FETCH_COLUMN);
 
     // 3. Scan the migrations directory
-    $migration_files = glob('migrations/*.sql');
+    $migration_files = glob(__DIR__ . '/migrations/*.sql');
     sort($migration_files);
 
     // 4. Execute new migrations

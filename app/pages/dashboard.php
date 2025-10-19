@@ -119,15 +119,6 @@ $recent_students = get_recent_students();
 <div class="glass-card p-6 mt-6">
     <div class="flex justify-between items-center mb-4">
         <h3 class="text-lg font-semibold text-gray-800 dark:text-white">Recent Students</h3>
-<?php
-$payment_chart_data = get_payment_data_for_chart();
-$chart_labels = json_encode(array_column($payment_chart_data, 'date'));
-$chart_values = json_encode(array_column($payment_chart_data, 'total'));
-?>
-<script>
-    const chartLabels = <?php echo $chart_labels; ?>;
-    const chartValues = <?php echo $chart_values; ?>;
-</script>
         <a href="index.php?page=students" class="text-primary-500 dark:text-primary-400 text-sm font-medium flex items-center space-x-1">
             <span>View All</span>
             <i data-feather="chevron-right" class="w-4 h-4"></i>
@@ -169,3 +160,13 @@ $chart_values = json_encode(array_column($payment_chart_data, 'total'));
         </table>
     </div>
 </div>
+
+<?php
+$payment_chart_data = get_payment_data_for_chart();
+$chart_labels = json_encode(array_column($payment_chart_data, 'date'));
+$chart_values = json_encode(array_column($payment_chart_data, 'total'));
+?>
+<script>
+    const chartLabels = <?php echo $chart_labels; ?>;
+    const chartValues = <?php echo $chart_values; ?>;
+</script>

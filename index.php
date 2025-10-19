@@ -9,15 +9,15 @@ session_start();
 
 // If the user is not logged in, redirect to the login page
 if (!isset($_SESSION['user_id'])) {
-    header('Location: login.php');
+    header('Location: app/login.php');
     exit;
 }
 
 // Include the database connection file
-require_once 'config/db.php';
+require_once 'core/config/db.php';
 
 // Include the functions file
-require_once 'lib/functions.php';
+require_once 'core/lib/functions.php';
 
 // Get the current page from the URL, default to dashboard
 $page = isset($_GET['page']) ? $_GET['page'] : 'dashboard';
@@ -32,10 +32,10 @@ if (!in_array($page, $allowed_pages)) {
 }
 
 // Include the header
-include 'includes/header.php';
+include 'app/includes/header.php';
 
 // Include the sidebar
-include 'includes/sidebar.php';
+include 'app/includes/sidebar.php';
 ?>
 
 <!-- Top bar -->
@@ -67,17 +67,17 @@ include 'includes/sidebar.php';
 <main class="ml-64 px-4 py-6">
     <?php
     // Include the page content
-    $page_path = "pages/{$page}.php";
+    $page_path = "app/pages/{$page}.php";
     if (file_exists($page_path)) {
         include $page_path;
     } else {
         // Fallback to a default page or show an error
-        include 'pages/dashboard.php';
+        include 'app/pages/dashboard.php';
     }
     ?>
-</div>
+</main>
 
 <?php
 // Include the footer
-include 'includes/footer.php';
+include 'app/includes/footer.php';
 ?>
