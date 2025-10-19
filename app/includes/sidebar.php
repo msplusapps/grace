@@ -1,67 +1,32 @@
 <!-- Sidebar -->
-<div class="fixed inset-y-0 left-0 w-64 flex flex-col bg-white dark:bg-gray-800 border-r border-gray-200 dark:border-gray-700 z-40">
-    <div class="flex items-center justify-center h-16 px-4 border-b border-gray-200 dark:border-gray-700">
-        <div class="flex items-center space-x-2">
-            <div class="w-8 h-8 rounded-lg bg-primary-500 flex items-center justify-center">
-                <i data-feather="book" class="text-white"></i>
-            </div>
-            <h1 class="text-xl font-bold text-gray-800 dark:text-white">EduPay Nexus</h1>
-        </div>
+<div class="bg-white border-end" id="sidebar-wrapper">
+    <div class="sidebar-heading border-bottom bg-light">
+        <a href="/" class="navbar-brand">
+            <i data-feather="book" class="me-2"></i>
+            <strong>EduPay Nexus</strong>
+        </a>
     </div>
-    <div class="flex-1 overflow-y-auto px-4 py-4">
-        <nav class="space-y-1">
-            <a href="/dashboard" class="flex items-center px-3 py-2 text-sm font-medium rounded-lg <?php echo ($page == 'dashboard') ? 'bg-primary-50 dark:bg-gray-700 text-primary-600 dark:text-primary-400' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'; ?>">
-                <i data-feather="home" class="w-5 h-5 mr-3"></i>
-                Dashboard
-            </a>
-            <a href="/students" class="flex items-center px-3 py-2 text-sm font-medium rounded-lg <?php echo ($page == 'students') ? 'bg-primary-50 dark:bg-gray-700 text-primary-600 dark:text-primary-400' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'; ?>">
-                <i data-feather="users" class="w-5 h-5 mr-3"></i>
-                Students
-            </a>
-            <a href="/payments" class="flex items-center px-3 py-2 text-sm font-medium rounded-lg <?php echo ($page == 'payments') ? 'bg-primary-50 dark:bg-gray-700 text-primary-600 dark:text-primary-400' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'; ?>">
-                <i data-feather="credit-card" class="w-5 h-5 mr-3"></i>
-                Payments
-            </a>
-            <a href="/reports" class="flex items-center px-3 py-2 text-sm font-medium rounded-lg <?php echo ($page == 'reports') ? 'bg-primary-50 dark:bg-gray-700 text-primary-600 dark:text-primary-400' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'; ?>">
-                <i data-feather="pie-chart" class="w-5 h-5 mr-3"></i>
-                Reports
-            </a>
-            <a href="/settings" class="flex items-center px-3 py-2 text-sm font-medium rounded-lg <?php echo ($page == 'settings') ? 'bg-primary-50 dark:bg-gray-700 text-primary-600 dark:text-primary-400' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'; ?>">
-                <i data-feather="settings" class="w-5 h-5 mr-3"></i>
-                Settings
-            </a>
-            <a href="/school_info" class="flex items-center px-3 py-2 text-sm font-medium rounded-lg <?php echo ($page == 'school_info') ? 'bg-primary-50 dark:bg-gray-700 text-primary-600 dark:text-primary-400' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'; ?>">
-                <i data-feather="info" class="w-5 h-5 mr-3"></i>
-                School Info
-            </a>
-            <a href="/profile" class="flex items-center px-3 py-2 text-sm font-medium rounded-lg <?php echo ($page == 'profile') ? 'bg-primary-50 dark:bg-gray-700 text-primary-600 dark:text-primary-400' : 'text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700'; ?>">
-                <i data-feather="user" class="w-5 h-5 mr-3"></i>
-                Profile
-            </a>
-        </nav>
-        <div class="mt-8">
-            <h3 class="px-3 text-xs font-semibold text-gray-500 dark:text-gray-400 uppercase tracking-wider">Quick Actions</h3>
-            <div class="mt-2 space-y-1">
-                <a href="/add_student" class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
-                    <i data-feather="plus" class="w-5 h-5 mr-3 text-green-500"></i>
-                    New Student
-                </a>
-                <a href="/add_payment" class="w-full flex items-center px-3 py-2 text-sm font-medium rounded-lg text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-700">
-                    <i data-feather="dollar-sign" class="w-5 h-5 mr-3 text-blue-500"></i>
-                    Record Payment
-                </a>
-            </div>
-        </div>
-    </div>
-    <div class="p-4 border-t border-gray-200 dark:border-gray-700">
-        <div class="flex items-center">
-            <div class="w-10 h-10 rounded-full bg-gray-200 dark:bg-gray-700 flex items-center justify-center">
-                <i data-feather="user" class="text-gray-600 dark:text-gray-300"></i>
-            </div>
-            <div class="ml-3">
-                <p class="text-sm font-medium text-gray-700 dark:text-gray-200"><?php echo htmlspecialchars($_SESSION['username']); ?></p>
-                <a href="logout.php" class="text-xs text-gray-500 dark:text-gray-400 hover:underline">Logout</a>
-            </div>
-        </div>
+    <div class="list-group list-group-flush">
+        <a class="list-group-item list-group-item-action list-group-item-light p-3 <?php echo ($page == 'dashboard') ? 'active' : ''; ?>" href="/dashboard">
+            <i data-feather="home" class="me-2"></i> Dashboard
+        </a>
+        <a class="list-group-item list-group-item-action list-group-item-light p-3 <?php echo ($page == 'students') ? 'active' : ''; ?>" href="/students">
+            <i data-feather="users" class="me-2"></i> Students
+        </a>
+        <a class="list-group-item list-group-item-action list-group-item-light p-3 <?php echo ($page == 'payments') ? 'active' : ''; ?>" href="/payments">
+            <i data-feather="credit-card" class="me-2"></i> Payments
+        </a>
+        <a class="list-group-item list-group-item-action list-group-item-light p-3 <?php echo ($page == 'reports') ? 'active' : ''; ?>" href="/reports">
+            <i data-feather="pie-chart" class="me-2"></i> Reports
+        </a>
+        <a class="list-group-item list-group-item-action list-group-item-light p-3 <?php echo ($page == 'settings') ? 'active' : ''; ?>" href="/settings">
+            <i data-feather="settings" class="me-2"></i> Settings
+        </a>
+        <a class="list-group-item list-group-item-action list-group-item-light p-3 <?php echo ($page == 'school_info') ? 'active' : ''; ?>" href="/school_info">
+            <i data-feather="info" class="me-2"></i> School Info
+        </a>
+        <a class="list-group-item list-group-item-action list-group-item-light p-3 <?php echo ($page == 'profile') ? 'active' : ''; ?>" href="/profile">
+            <i data-feather="user" class="me-2"></i> Profile
+        </a>
     </div>
 </div>

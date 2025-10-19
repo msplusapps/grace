@@ -55,7 +55,7 @@ function get_active_theme_css() {
  * @return array An array of students.
  */
 function get_students($search = '') {
-    $db = Database::getInstance();
+    global $pdo;
     $sql = "SELECT * FROM students";
     $params = [];
     if (!empty($search)) {
@@ -63,7 +63,9 @@ function get_students($search = '') {
         $params[] = "%$search%";
         $params[] = "%$search%";
     }
-    return $db->select($sql, $params);
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 /**
@@ -72,9 +74,10 @@ function get_students($search = '') {
  * @return array|false The student data, or false if not found.
  */
 function get_student($id) {
-    $db = Database::getInstance();
-    $result = $db->select("SELECT * FROM students WHERE id = ?", [$id]);
-    return $result ? $result[0] : false;
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT * FROM students WHERE id = ?");
+    $stmt->execute([$id]);
+    return $stmt->fetch(PDO::FETCH_ASSOC);
 }
 
 /**
@@ -83,8 +86,9 @@ function get_student($id) {
  * @return bool True on success, false on failure.
  */
 function delete_student($id) {
-    $db = Database::getInstance();
-    return $db->delete('students', "id = :id", ['id' => $id]);
+    global $pdo;
+    $stmt = $pdo->prepare("DELETE FROM students WHERE id = ?");
+    return $stmt->execute([$id]);
 }
 
 /**
@@ -98,16 +102,10 @@ function delete_student($id) {
  * @return bool True on success, false on failure.
  */
 function add_student($first_name, $last_name, $class, $date_of_birth, $address, $parent_phone) {
-    $db = Database::getInstance();
-    $data = [
-        'first_name' => $first_name,
-        'last_name' => $last_name,
-        'class' => $class,
-        'date_of_birth' => $date_of_birth,
-        'address' => $address,
-        'parent_phone' => $parent_phone,
-    ];
-    return $db->insert('students', $data);
+    global $pdo;
+    $sql = "INSERT INTO students (first_name, last_name, class, date_of_birth, address, parent_phone) VALUES (?, ?, ?, ?, ?, ?)";
+    $stmt = $pdo->prepare($sql);
+    return $stmt->execute([$first_name, $last_name, $class, $date_of_birth, $address, $parent_phone]);
 }
 
 /**
@@ -122,16 +120,10 @@ function add_student($first_name, $last_name, $class, $date_of_birth, $address, 
  * @return bool True on success, false on failure.
  */
 function update_student($id, $first_name, $last_name, $class, $date_of_birth, $address, $parent_phone) {
-    $db = Database::getInstance();
-    $data = [
-        'first_name' => $first_name,
-        'last_name' => $last_name,
-        'class' => $class,
-        'date_of_birth' => $date_of_birth,
-        'address' => $address,
-        'parent_phone' => $parent_phone,
-    ];
-    return $db->update('students', $data, "id = :id", ['id' => $id]);
+    global $pdo;
+    $sql = "UPDATE students SET first_name = ?, last_name = ?, class = ?, date_of_birth = ?, address = ?, parent_phone = ? WHERE id = ?";
+    $stmt = $pdo->prepare($sql);
+    return $stmt->execute([$first_name, $last_name, $class, $date_of_birth, $address, $parent_phone, $id]);
 }
 
 /**
@@ -140,7 +132,7 @@ function update_student($id, $first_name, $last_name, $class, $date_of_birth, $a
  * @return array An array of payments.
  */
 function get_payments($search = '') {
-    $db = Database::getInstance();
+    global $pdo;
     $sql = "SELECT p.*, CONCAT(s.first_name, ' ', s.last_name) AS student_name
             FROM payments p
             JOIN students s ON p.student_id = s.id";
@@ -151,7 +143,9 @@ function get_payments($search = '') {
         $params[] = "%$search%";
     }
     $sql .= " ORDER BY p.payment_date DESC";
-    return $db->select($sql, $params);
+    $stmt = $pdo->prepare($sql);
+    $stmt->execute($params);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 /**
@@ -160,8 +154,10 @@ function get_payments($search = '') {
  * @return array An array of payments.
  */
 function get_student_payments($student_id) {
-    $db = Database::getInstance();
-    return $db->select("SELECT * FROM payments WHERE student_id = ? ORDER BY payment_date DESC", [$student_id]);
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT * FROM payments WHERE student_id = ? ORDER BY payment_date DESC");
+    $stmt->execute([$student_id]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 /**
@@ -174,15 +170,10 @@ function get_student_payments($student_id) {
  * @return bool True on success, false on failure.
  */
 function add_payment($student_id, $amount, $payment_date, $payment_method, $reference) {
-    $db = Database::getInstance();
-    $data = [
-        'student_id' => $student_id,
-        'amount' => $amount,
-        'payment_date' => $payment_date,
-        'payment_method' => $payment_method,
-        'reference' => $reference,
-    ];
-    return $db->insert('payments', $data);
+    global $pdo;
+    $sql = "INSERT INTO payments (student_id, amount, payment_date, payment_method, reference) VALUES (?, ?, ?, ?, ?)";
+    $stmt = $pdo->prepare($sql);
+    return $stmt->execute([$student_id, $amount, $payment_date, $payment_method, $reference]);
 }
 
 /**
@@ -191,8 +182,9 @@ function add_payment($student_id, $amount, $payment_date, $payment_method, $refe
  * @return bool True on success, false on failure.
  */
 function delete_payment($id) {
-    $db = Database::getInstance();
-    return $db->delete('payments', "id = :id", ['id' => $id]);
+    global $pdo;
+    $stmt = $pdo->prepare("DELETE FROM payments WHERE id = ?");
+    return $stmt->execute([$id]);
 }
 
 /**
@@ -200,9 +192,9 @@ function delete_payment($id) {
  * @return int The total number of students.
  */
 function get_student_count() {
-    $db = Database::getInstance();
-    $result = $db->select("SELECT COUNT(*) as count FROM students");
-    return $result ? $result[0]['count'] : 0;
+    global $pdo;
+    $stmt = $pdo->query("SELECT COUNT(*) FROM students");
+    return $stmt->fetchColumn();
 }
 
 /**
@@ -210,9 +202,9 @@ function get_student_count() {
  * @return float The total amount of all payments.
  */
 function get_total_payments() {
-    $db = Database::getInstance();
-    $result = $db->select("SELECT SUM(amount) as total FROM payments");
-    return $result ? $result[0]['total'] : 0;
+    global $pdo;
+    $stmt = $pdo->query("SELECT SUM(amount) FROM payments");
+    return $stmt->fetchColumn();
 }
 
 /**
@@ -220,15 +212,16 @@ function get_total_payments() {
  * @return array An array of payment data.
  */
 function get_payment_data_for_chart() {
-    $db = Database::getInstance();
-    $sql = "
+    global $pdo;
+    $stmt = $pdo->prepare("
         SELECT DATE(payment_date) as date, SUM(amount) as total
         FROM payments
         WHERE payment_date >= CURDATE() - INTERVAL 30 DAY
         GROUP BY DATE(payment_date)
         ORDER BY DATE(payment_date)
-    ";
-    return $db->select($sql);
+    ");
+    $stmt->execute();
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 /**
@@ -236,11 +229,11 @@ function get_payment_data_for_chart() {
  * @return int The number of pending payments.
  */
 function get_pending_payments_count() {
-    $db = Database::getInstance();
+    global $pdo;
     // Assuming 'pending' is a status in the payment_method or a separate status column
     // For now, let's count all payments that are not 'Completed'
-    $result = $db->select("SELECT COUNT(*) as count FROM payments WHERE payment_method != 'Completed'");
-    return $result ? $result[0]['count'] : 0;
+    $stmt = $pdo->query("SELECT COUNT(*) FROM payments WHERE payment_method != 'Completed'");
+    return $stmt->fetchColumn();
 }
 
 /**
@@ -248,10 +241,10 @@ function get_pending_payments_count() {
  * @return int The number of overdue payments.
  */
 function get_overdue_payments_count() {
-    $db = Database::getInstance();
+    global $pdo;
     // Assuming overdue payments are those not 'Completed' and past their due date
-    $result = $db->select("SELECT COUNT(*) as count FROM payments WHERE payment_method != 'Completed' AND payment_date < CURDATE()");
-    return $result ? $result[0]['count'] : 0;
+    $stmt = $pdo->query("SELECT COUNT(*) FROM payments WHERE payment_method != 'Completed' AND payment_date < CURDATE()");
+    return $stmt->fetchColumn();
 }
 
 /**
@@ -260,15 +253,16 @@ function get_overdue_payments_count() {
  * @return array An array of recent payments.
  */
 function get_recent_payments($limit = 5) {
-    $db = Database::getInstance();
-    $sql = "
+    global $pdo;
+    $stmt = $pdo->prepare("
         SELECT p.*, s.first_name, s.last_name
         FROM payments p
         JOIN students s ON p.student_id = s.id
         ORDER BY p.payment_date DESC
         LIMIT ?
-    ";
-    return $db->select($sql, [$limit]);
+    ");
+    $stmt->execute([$limit]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
 
 /**
@@ -277,9 +271,10 @@ function get_recent_payments($limit = 5) {
  * @return mixed The setting value, or null if not found.
  */
 function get_school_setting($key) {
-    $db = Database::getInstance();
-    $result = $db->select("SELECT setting_value FROM school_settings WHERE setting_key = ?", [$key]);
-    return $result ? $result[0]['setting_value'] : null;
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT setting_value FROM school_settings WHERE setting_key = ?");
+    $stmt->execute([$key]);
+    return $stmt->fetchColumn();
 }
 
 /**
@@ -289,9 +284,9 @@ function get_school_setting($key) {
  * @return bool True on success, false on failure.
  */
 function update_school_setting($key, $value) {
-    $db = Database::getInstance();
-    $data = ['setting_value' => $value];
-    return $db->update('school_settings', $data, "setting_key = :key", ['key' => $key]);
+    global $pdo;
+    $stmt = $pdo->prepare("UPDATE school_settings SET setting_value = ? WHERE setting_key = ?");
+    return $stmt->execute([$value, $key]);
 }
 
 /**
@@ -320,6 +315,8 @@ function validate_csrf_token($token) {
  * @return array An array of recent students.
  */
 function get_recent_students($limit = 5) {
-    $db = Database::getInstance();
-    return $db->select("SELECT * FROM students ORDER BY created_at DESC LIMIT ?", [$limit]);
+    global $pdo;
+    $stmt = $pdo->prepare("SELECT * FROM students ORDER BY created_at DESC LIMIT ?");
+    $stmt->execute([$limit]);
+    return $stmt->fetchAll(PDO::FETCH_ASSOC);
 }
